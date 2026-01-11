@@ -2,31 +2,13 @@
 
 <div align="center">
 
-  <img src="https://media.giphy.com/media/WUlplcMpOKEcVHt4l0/giphy.gif" width="35" alt="Star" />
-  
   ![Typing Animation](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=3000&pause=1000&color=2F81F7&center=true&vCenter=true&width=600&lines=Full+Stack+Web+Developer;Next.js+%26+Node.js+Enthusiast;Building+modern+web+experiences)
-  
-  <img src="https://media.giphy.com/media/WUlplcMpOKEcVHt4l0/giphy.gif" width="35" alt="Star" />
-
-  <img src="https://raw.githubusercontent.com/Badryansah/Badryansah/output/github-contribution-grid-snake.svg" alt="🐍 Snake Contribution" width="700">
 
 </div>
 
 ---
 
-<div align="center">
-  
-  <img src="https://profile-counter.glitch.me/Badryansah/count.svg" alt="Profile Views" />
-  
-</div>
-
 ## 👨‍💻 About Me
-
-<div align="center">
-
-  <img src="https://media.giphy.com/media/bcKbIu5zRzJ6k/giphy.gif" width="200" height="150" alt="Developer" />
-
-</div>
 
 I'm a passionate web developer crafting modern, responsive, and user-friendly applications. Always learning, always building.
 
@@ -44,12 +26,10 @@ I'm a passionate web developer crafting modern, responsive, and user-friendly ap
 
 <div align="center">
 
-  <img src="https://media.giphy.com/media/L1R1TVbNp1jBcRr0wP/giphy.gif" width="50" alt="Coding">
-  
   🔥 **Currently working on** <span style="background: linear-gradient(90deg, #FF6B6B, #FFE66D); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Next.js projects & Node.js/Express APIs</span>
-  
+
   💡 **Open to** <span style="background: linear-gradient(90deg, #4ECDC4, #44A08D); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">freelance opportunities</span>
-  
+
   🎯 **Learning** <span style="background: linear-gradient(90deg, #6366F1, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Advanced Next.js patterns</span>
 
 </div>
@@ -61,8 +41,6 @@ I'm a passionate web developer crafting modern, responsive, and user-friendly ap
 ### Frontend
 <div align="center">
 
-  <img src="https://media.giphy.com/media/Sr8r9T5a7X3r6/giphy.gif" width="30" alt="Code" />
-  
   ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white&link=https://developer.mozilla.org/en-US/docs/Web/HTML)
   ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white&link=https://developer.mozilla.org/en-US/docs/Web/CSS)
   ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black&link=https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -75,8 +53,6 @@ I'm a passionate web developer crafting modern, responsive, and user-friendly ap
 
 ### Backend & Tools
 <div align="center">
-
-  <img src="https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif" width="30" alt="Server" />
 
   ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white&link=https://nodejs.org/)
   ![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white&link=https://expressjs.com/)
@@ -92,8 +68,6 @@ I'm a passionate web developer crafting modern, responsive, and user-friendly ap
 
 <div align="center">
 
-  <img src="https://media.giphy.com/media/l1KVbjN6g2Y2rVd1q/giphy.gif" width="40" alt="Connect" />
-
   [![Portfolio](https://img.shields.io/badge/Portfolio-FF6C37?style=for-the-badge&logo=todoist&logoColor=white&link=https://badryansahbangsawan.my.id/)](https://badryansahbangsawan.my.id/)
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&link=https://www.linkedin.com/in/badryansah-bangsawan-19653a31a)](https://www.linkedin.com/in/badryansah-bangsawan-19653a31a)
   [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white&link=https://www.instagram.com/badryanbangsawan)](https://www.instagram.com/badryanbangsawan)
@@ -107,8 +81,6 @@ I'm a passionate web developer crafting modern, responsive, and user-friendly ap
 
 <div align="center">
 
-  <img src="https://media.giphy.com/media/xT9IgusfDfqp9ISNDo/giphy.gif" width="40" alt="Trophy" />
-
   <img src="https://github-profile-trophy.vercel.app/?username=Badryansah&theme=tokyonight&no-frame=true&no-bg=true&margin-w=4" alt="GitHub Trophy">
 
 </div>
@@ -117,13 +89,9 @@ I'm a passionate web developer crafting modern, responsive, and user-friendly ap
 
 <div align="center">
 
-  <img src="https://media.giphy.com/media/dWesBcTLavkZuG35MI/giphy.gif" width="350" height="200" alt="Coding Animation" />
-
   **⚡ Fun fact: I turn coffee into code and bugs into features!**
 
   <div align="center">
-
-    <img src="https://media.giphy.com/media/VbXlR4o2Z1Y4M/giphy.gif" width="100" alt="Coffee" />
 
   </div>
 
