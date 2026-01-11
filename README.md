@@ -35,6 +35,18 @@ I am a passionate web developer focused on building modern, responsive, and user
   <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white">
 </span>
 
+## 📊 GitHub Stats
+
+![Badryansah's GitHub Stats](https://github-readme-stats.vercel.app/api?username=Badryansah&show_icons=true&theme=tokyonight&border_radius=10&hide_border=true)
+
+![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=Badryansah&theme=tokyonight&hide_border=true&border_radius=10)
+
+![GitHub Trophy](https://github-profile-trophy.vercel.app/?username=Badryansah&theme=tokyonight&no-frame=true&no-bg=true&margin-w=4)
+
+![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Badryansah&theme=tokyonight&hide_border=true&border_radius=10&layout=compact)
+
+![Profile Summary Card](https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Badryansah&theme=tokyonight&hide_border=true)
+
 ## Check out my Social Media
 
 <a href="https://www.instagram.com/badryanbangsawan">
@@ -43,6 +55,6 @@ I am a passionate web developer focused on building modern, responsive, and user
 <a href="https://www.linkedin.com/in/badryansah-bangsawan-19653a31a">
   <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white">
 </a>
-<a href="https://www.badry.asia">
+<a href="https://badryansahbangsawan.my.id/">
   <img src="https://img.shields.io/badge/Portfolio-FF6C37?style=for-the-badge&logo=todoist&logoColor=white">
 </a>
