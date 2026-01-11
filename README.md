@@ -77,37 +77,21 @@ I'm a passionate web developer crafting modern, responsive, and user-friendly ap
 
 ---
 
-### 🏆 Achievements
-
 <div align="center">
 
-  <img src="https://github-profile-trophy.vercel.app/?username=Badryansah&theme=tokyonight&no-frame=true&no-bg=true&margin-w=4" alt="GitHub Trophy">
-
-</div>
-
----
-
-<div align="center">
+  <img src="https://media.giphy.com/media/dWesBcTLavkZuG35MI/giphy.gif" width="350" height="200" alt="Coding Animation" />
 
   **⚡ Fun fact: I turn coffee into code and bugs into features!**
 
-  <div align="center">
-
-  </div>
-
 </div>
 
 ---
 
 <div align="center">
-
-  <img src="https://media.giphy.com/media/jpVnoCruv8BLw/giphy.gif" width="100" alt="Thanks" />
-
   <b>Thanks for visiting! Let's build something amazing together! 🚀</b>
 
   <div align="center">
 
-    <img src="https://media.giphy.com/media/XAxYRfDkjY9W/giphy.gif" width="50" alt="Rocket" />
 
   </div>
 
