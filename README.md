@@ -4,7 +4,7 @@
 
   <img src="https://media.giphy.com/media/WUlplcMpOKEcVHt4l0/giphy.gif" width="35" alt="Star" />
   
-  ![Typing Animation](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=3000&pause=1000&color=2F81F7&center=true&vCenter=true&width=600&lines=Full+Stack+Web+Developer;Next.js+%26+Laravel+Enthusiast;Building+modern+web+experiences)
+  ![Typing Animation](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=3000&pause=1000&color=2F81F7&center=true&vCenter=true&width=600&lines=Full+Stack+Web+Developer;Next.js+%26+Node.js+Enthusiast;Building+modern+web+experiences)
   
   <img src="https://media.giphy.com/media/WUlplcMpOKEcVHt4l0/giphy.gif" width="35" alt="Star" />
 
@@ -31,7 +31,7 @@
 I'm a passionate web developer crafting modern, responsive, and user-friendly applications. Always learning, always building.
 
 ```
-🌱 Learning: Next.js & Laravel
+🌱 Learning: Next.js & Node.js/Express
 👯 Open to: Open source & freelance collabs
 💡 Ask me: Web dev questions!
 🎮 Hobbies: Gaming, Music, Tech Books
@@ -46,7 +46,7 @@ I'm a passionate web developer crafting modern, responsive, and user-friendly ap
 
   <img src="https://media.giphy.com/media/L1R1TVbNp1jBcRr0wP/giphy.gif" width="50" alt="Coding">
   
-  🔥 **Currently working on** <span style="background: linear-gradient(90deg, #FF6B6B, #FFE66D); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Next.js projects & Laravel APIs</span>
+  🔥 **Currently working on** <span style="background: linear-gradient(90deg, #FF6B6B, #FFE66D); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Next.js projects & Node.js/Express APIs</span>
   
   💡 **Open to** <span style="background: linear-gradient(90deg, #4ECDC4, #44A08D); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">freelance opportunities</span>
   
@@ -78,38 +78,11 @@ I'm a passionate web developer crafting modern, responsive, and user-friendly ap
 
   <img src="https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif" width="30" alt="Server" />
 
-  ![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white&link=https://www.php.net/)
-  ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white&link=https://laravel.com/)
+  ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white&link=https://nodejs.org/)
+  ![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white&link=https://expressjs.com/)
   ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white&link=https://www.mysql.com/)
-  ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=flat-square&logo=mongodb&logoColor=white&link=https://www.mongodb.com/)
   ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white&link=https://git-scm.com/)
-  ![VS Code](https://img.shields.io/badge/VS_Code-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white&link=https://code.visualstudio.com/)
   ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white&link=https://www.postman.com/)
-
-</div>
-
----
-
-## 📊 GitHub Analytics
-
-<div align="center">
-
-  <img src="https://media.giphy.com/media/j3JbD3ZK1XW9Y0v3cR/giphy.gif" width="40" alt="Stats" />
-
-  <img src="https://github-readme-stats.vercel.app/api?username=Badryansah&show_icons=true&theme=tokyonight&hide_border=true&border_radius=20&card_width=500&title_color=2F81F7&text_color=FFFFFF&icon_color=2F81F7&bg_color=0D1117" alt="GitHub Stats">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Badryansah&theme=tokyonight&hide_border=true&border_radius=20&layout=compact&title_color=2F81F7&text_color=FFFFFF&icon_color=2F81F7&bg_color=0D1117" alt="Top Languages">
-
-</div>
-
-<div align="center">
-
-  <img src="https://streak-stats.demolab.com?user=Badryansah&theme=tokyonight&hide_border=true&border_radius=20&background=0D1117&stroke=2F81F7&ring=2F81F7&fire=FF6B6B&currStreakNum=FFFFFF&sideNums=FFFFFF&currStreakLabel=FFFFFF&sideLabels=FFFFFF" alt="GitHub Streak">
-
-</div>
-
-<div align="center">
-
-  <img src="https://activity-graph.herokuapp.com/graph?username=Badryansah&theme=tokyo-night&hide_border=true&bg_color=0D1117&color=2F81F7&line=61DAFB&point=FF6B6B" alt="Contribution Graph" width="800">
 
 </div>
 
