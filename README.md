@@ -1,8 +1,3 @@
-<!-- Background image -->
-<p align="center">
-  <img src="assets/Linkedin_background_image_updated.png" alt="LinkedIn Background Image" width="100%">
-</p>
-
 <!-- Hero text -->
 <h1 align="center">Hey 👋, <a href="https://www.abhijitzende.com/">I'm badryansah bangsawan 👨‍💻</a></h1>
 
@@ -13,12 +8,6 @@
   </a>
 </p>
 
-<!-- Snake Game -->
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/BadryansahBangsawan/BadryansahBangsawan/output/github-snake-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/BadryansahBangsawan/BadryansahBangsawan/output/github-snake.svg" />
-  <img alt="github-snake" src="https://raw.githubusercontent.com/BadryansahBangsawan/BadryansahBangsawan/output/github-snake.svg" />
-</picture>
 
 <!-- GPRM Profile generated readme -->
 # 💫 About Me:
@@ -35,9 +24,6 @@
 ![](https://github-readme-stats.vercel.app/api?username=BadryansahBangsawan&theme=radical&hide_border=false&include_all_commits=true&count_private=true)<br/>
 ![](https://github-readme-streak-stats.herokuapp.com/?user=BadryansahBangsawan&theme=radical&hide_border=false)<br/>
 ![](https://github-readme-stats.vercel.app/api/top-langs/?username=BadryansahBangsawan&theme=radical&hide_border=false&include_all_commits=true&count_private=true&layout=compact)
-
-## 🏆 GitHub Trophies
-![](https://github-profile-trophy.vercel.app/?username=BadryansahBangsawan&theme=radical&no-frame=false&no-bg=false&margin-w=4)
 
 ### ✍️ Random Dev Quote
 ![](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical)
