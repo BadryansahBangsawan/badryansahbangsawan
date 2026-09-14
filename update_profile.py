@@ -27,7 +27,7 @@ USER_NAME = os.environ.get('USER_NAME', 'BadryansahBangsawan')
 QUERY_COUNT = {
     'user_getter': 0, 'follower_getter': 0,
     'graph_repos_stars': 0, 'recursive_loc': 0,
-    'graph_commits': 0, 'loc_query': 0
+    'graph_commits': 0, 'graph_streak': 0, 'loc_query': 0
 }
 
 # SVG element IDs to update
@@ -42,6 +42,10 @@ SVG_ELEMENTS = {
     'commit_data_dots': 'commit_data_dots',
     'follower_data': 'follower_data',
     'follower_data_dots': 'follower_data_dots',
+    'streak_data': 'streak_data',
+    'streak_data_dots': 'streak_data_dots',
+    'longest_data': 'longest_data',
+    'longest_data_dots': 'longest_data_dots',
     'quote_text': 'quote_text',
     'quote_author': 'quote_author',
 }
@@ -182,6 +186,54 @@ def get_total_commits(start_date, end_date):
         'end': end_date
     })
     return data['data']['user']['contributionsCollection']['contributionCalendar']['totalContributions']
+
+
+def compute_streaks(days, today):
+    """days: [(YYYY-MM-DD, count), ...]. today: YYYY-MM-DD. Returns (current, longest)."""
+    longest = run = 0
+    for _, count in days:
+        if count > 0:
+            run += 1
+            longest = max(longest, run)
+        else:
+            run = 0
+    upto = [(d, c) for d, c in days if d <= today]
+    if upto and upto[-1][1] == 0:
+        upto = upto[:-1]
+    current = 0
+    for _, count in reversed(upto):
+        if count > 0:
+            current += 1
+        else:
+            break
+    return current, longest
+
+
+assert compute_streaks([('2026-09-13', 1), ('2026-09-14', 1), ('2026-09-15', 1)], '2026-09-15') == (3, 3)
+assert compute_streaks([('2026-09-14', 1), ('2026-09-15', 0)], '2026-09-15') == (1, 1)
+assert compute_streaks([('2026-09-13', 1), ('2026-09-14', 0), ('2026-09-15', 1)], '2026-09-15') == (1, 1)
+
+
+def get_streaks():
+    """Current + longest contribution streak from the last-year calendar."""
+    query = '''
+    query($login: String!) {
+        user(login: $login) {
+            contributionsCollection {
+                contributionCalendar {
+                    weeks { contributionDays { date contributionCount } }
+                }
+            }
+        }
+    }'''
+    data = graphql_request('graph_streak', query, {'login': USER_NAME})
+    days = [
+        (d['date'], d['contributionCount'])
+        for week in data['data']['user']['contributionsCollection']['contributionCalendar']['weeks']
+        for d in week['contributionDays']
+    ]
+    today = datetime.date.today().isoformat()
+    return compute_streaks(days, today)
 
 
 def get_loc(owner_affiliation):
@@ -371,6 +423,8 @@ def update_svg(svg_path, stats, quote):
     justify_format(root, 'star_data', stats['stars'], 14)
     justify_format(root, 'commit_data', stats['commits'], 22)
     justify_format(root, 'follower_data', stats['followers'], 10)
+    justify_format(root, 'streak_data', stats['streak'])
+    justify_format(root, 'longest_data', stats['longest'])
 
     # Quote elements with word wrapping
     update_quote(root, quote[0], quote[1])
@@ -410,12 +464,17 @@ def main():
     # Followers
     followers = get_followers()
 
+    # Streak (current + longest in the last-year calendar)
+    streak, longest = get_streaks()
+
     stats = {
         'age': age,
         'repos': repos,
         'stars': stars,
         'commits': commits,
         'followers': followers,
+        'streak': f"{streak} day{format_plural(streak)}",
+        'longest': f"{longest} day{format_plural(longest)}",
     }
 
     print(f"\nStats:")
