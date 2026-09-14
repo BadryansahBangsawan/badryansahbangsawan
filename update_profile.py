@@ -327,18 +327,29 @@ def justify_format(root, element_id, new_text, length=0):
     new_text = str(new_text)
 
     elem = root.find(f".//*[@id='{element_id}']")
-    if elem is not None:
-        elem.text = new_text
+    if elem is None:
+        return
+    old = elem.text or ''
+    elem.text = new_text
 
-    dots_id = f"{element_id}_dots"
-    dots_elem = root.find(f".//*[@id='{dots_id}']")
-    if dots_elem is not None:
-        just_len = max(0, length - len(new_text))
-        if just_len <= 2:
-            dot_map = {0: '', 1: ' ', 2: '. '}
-            dots_elem.text = dot_map[just_len]
-        else:
-            dots_elem.text = ' ' + ('.' * just_len) + ' '
+    # Grow/shrink existing leader dots by the char delta so full-width layout stays.
+    dots_elem = root.find(f".//*[@id='{element_id}_dots']")
+    if dots_elem is None or dots_elem.text is None:
+        return
+    delta = len(new_text) - len(old)
+    if delta == 0:
+        return
+    inner = dots_elem.text
+    lead = len(inner) - len(inner.lstrip(' '))
+    trail = len(inner) - len(inner.rstrip(' '))
+    core = inner.strip(' ')
+    if not core or set(core) - {'.'}:
+        return
+    if delta > 0:
+        core = core[delta:] if len(core) > delta else '.'
+    else:
+        core = core + ('.' * (-delta))
+    dots_elem.text = (' ' * lead) + core + (' ' * trail)
 
 
 def update_quote(root, quote_text, author_name):
