@@ -355,7 +355,7 @@ def update_svg(svg_path, stats, quote):
     tree = etree.parse(svg_path)
     root = tree.getroot()
 
-    justify_format(root, 'age_data', stats['age'], 0)
+    # Keep static Uptime text in the SVG (e.g. "4+ years").
     justify_format(root, 'repo_data', stats['repos'], 6)
     justify_format(root, 'star_data', stats['stars'], 14)
     justify_format(root, 'commit_data', stats['commits'], 22)

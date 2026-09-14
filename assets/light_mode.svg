@@ -20,7 +20,7 @@ text, tspan {white-space: pre;}
 <tspan x="20" y="30">badryansah@github</tspan> -———————————————————————————————————————————-—-——————————————————————————————————————
 
 <tspan x="20" y="50" class="cc">. </tspan><tspan class="key">OS</tspan>:<tspan class="cc"> .............................................................. </tspan><tspan x="970" y="50" text-anchor="end" class="value">macOS, Windows, android, shell</tspan>
-<tspan x="20" y="70" class="cc">. </tspan><tspan class="key">Uptime</tspan>:<tspan class="cc" id="age_data_dots">................................................................................</tspan><tspan x="970" y="70" text-anchor="end" class="value" id="age_data">2+ years</tspan>
+<tspan x="20" y="70" class="cc">. </tspan><tspan class="key">Uptime</tspan>:<tspan class="cc" id="age_data_dots">................................................................................</tspan><tspan x="970" y="70" text-anchor="end" class="value" id="age_data">4+ years</tspan>
 <tspan x="20" y="90" class="cc">. </tspan><tspan class="key">Expertise</tspan>:<tspan class="cc"> ............................................... </tspan><tspan x="970" y="90" text-anchor="end" class="value">DevOps, Backend, Automation</tspan>
 <tspan x="20" y="110" class="cc">. </tspan><tspan class="key">Project</tspan>:<tspan class="cc"> ....................................................................... </tspan><tspan x="970" y="110" text-anchor="end" class="value">open source, automation</tspan>
 <tspan x="20" y="130" class="cc">. </tspan><tspan class="key">IDE</tspan>:<tspan class="cc"> ......................................................................... </tspan><tspan x="970" y="130" text-anchor="end" class="value">Zed, bbcli</tspan>
