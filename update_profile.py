@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Update GitHub Profile README with dynamic content:
-- Quote of the Day (from api.quotable.io)
-- GitHub Stats (repos, stars, commits, followers, LOC)
+- Quote of the Day
+- GitHub Stats (repos, stars, commits, followers, streaks)
+- Languages + expertise from owned-repo linguist bytes
 
 Author: Badryansah Bangsawan
 """
@@ -14,6 +14,7 @@ import time
 import hashlib
 import requests
 import datetime
+from collections import Counter
 from dateutil import relativedelta
 from lxml import etree
 
@@ -27,8 +28,73 @@ USER_NAME = os.environ.get('USER_NAME', 'BadryansahBangsawan')
 QUERY_COUNT = {
     'user_getter': 0, 'follower_getter': 0,
     'graph_repos_stars': 0, 'recursive_loc': 0,
-    'graph_commits': 0, 'graph_streak': 0, 'loc_query': 0
+    'graph_commits': 0, 'graph_streak': 0, 'loc_query': 0,
+    'graph_languages': 0,
 }
+
+# Linguist names that are markup/config, not programming languages.
+COMPUTER_LANGS = {
+    'HTML', 'CSS', 'SCSS', 'Less', 'JSON', 'SQL', 'PLpgSQL', 'YAML',
+    'Markdown', 'Dockerfile', 'Makefile', 'CMake', 'GraphQL', 'TOML',
+    'XML', 'SVG', 'Shell', 'PowerShell', 'Batchfile',
+}
+COMPUTER_CANON = {'PLpgSQL': 'SQL', 'SCSS': 'CSS', 'Less': 'CSS'}
+COMPUTER_FALLBACK = ['HTML', 'CSS', 'JSON', 'SQL', 'YAML', 'Markdown']
+SKIP_LANGS = {'Inno Setup', 'Objective-C'}
+MAX_PROGRAMMING = 4
+MAX_COMPUTER = 6
+
+
+def classify_languages(bytes_by_lang):
+    """Split linguist byte totals into programming vs computer language labels."""
+    programming = []
+    computer_seen = []
+    for name, _size in sorted(bytes_by_lang.items(), key=lambda kv: kv[1], reverse=True):
+        if name in SKIP_LANGS:
+            continue
+        if name in COMPUTER_LANGS:
+            canon = COMPUTER_CANON.get(name, name)
+            if canon not in computer_seen:
+                computer_seen.append(canon)
+            continue
+        if name not in programming:
+            programming.append(name)
+    ordered = list(COMPUTER_FALLBACK)
+    for name in computer_seen:
+        if name not in ordered:
+            ordered.append(name)
+    return programming[:MAX_PROGRAMMING], ordered[:MAX_COMPUTER]
+
+
+def derive_expertise(programming):
+    names = set(programming)
+    out = []
+    if 'Swift' in names:
+        out.append('macOS')
+    if names & {'TypeScript', 'JavaScript'}:
+        out.append('Fullstack')
+    for fallback in ('DevOps', 'Backend', 'Automation'):
+        if len(out) >= 3:
+            break
+        if fallback not in out:
+            out.append(fallback)
+    return out[:3]
+
+
+def derive_project(programming):
+    if 'Swift' in programming:
+        return 'open source, macOS apps'
+    return 'open source, automation'
+
+
+assert classify_languages({
+    'TypeScript': 100, 'JavaScript': 80, 'Swift': 60, 'Dart': 40, 'Python': 20,
+    'CSS': 10, 'HTML': 5, 'PLpgSQL': 4,
+}) == (['TypeScript', 'JavaScript', 'Swift', 'Dart'],
+       ['HTML', 'CSS', 'JSON', 'SQL', 'YAML', 'Markdown'])
+assert derive_expertise(['TypeScript', 'JavaScript', 'Swift', 'Dart']) == ['macOS', 'Fullstack', 'DevOps']
+assert derive_project(['Swift', 'TypeScript']) == 'open source, macOS apps'
+
 
 # SVG element IDs to update
 SVG_ELEMENTS = {
@@ -169,6 +235,37 @@ def get_repos_and_stars():
             break
         cursor = repos['pageInfo']['endCursor']
     return total_repos, total_stars
+
+
+def get_language_bytes():
+    """Sum linguist bytes across owned non-fork repositories."""
+    query = '''
+    query($login: String!, $cursor: String) {
+        user(login: $login) {
+            repositories(first: 100, after: $cursor, ownerAffiliations: [OWNER], isFork: false) {
+                edges {
+                    node {
+                        languages(first: 20, orderBy: {field: SIZE, direction: DESC}) {
+                            edges { size node { name } }
+                        }
+                    }
+                }
+                pageInfo { endCursor, hasNextPage }
+            }
+        }
+    }'''
+    totals = Counter()
+    cursor = None
+    while True:
+        data = graphql_request('graph_languages', query, {'login': USER_NAME, 'cursor': cursor})
+        repos = data['data']['user']['repositories']
+        for edge in repos['edges']:
+            for lang in edge['node']['languages']['edges']:
+                totals[lang['node']['name']] += lang['size']
+        if not repos['pageInfo']['hasNextPage']:
+            break
+        cursor = repos['pageInfo']['endCursor']
+    return totals
 
 
 def get_total_commits(start_date, end_date):
@@ -425,8 +522,12 @@ def update_svg(svg_path, stats, quote):
     justify_format(root, 'follower_data', stats['followers'], 10)
     justify_format(root, 'streak_data', stats['streak'])
     justify_format(root, 'longest_data', stats['longest'])
+    justify_format(root, 'expertise_data', stats['expertise'])
+    justify_format(root, 'project_data', stats['project'])
+    justify_format(root, 'programming_data', stats['programming'])
+    justify_format(root, 'computer_data', stats['computer'])
+    justify_format(root, 'loc_data', stats['programming'])
 
-    # Quote elements with word wrapping
     update_quote(root, quote[0], quote[1])
 
     tree.write(svg_path, encoding='utf-8', xml_declaration=True)
@@ -440,32 +541,32 @@ def main():
     print("=== GitHub Profile Updater ===")
     print(f"User: {USER_NAME}")
 
-    # Fetch quote
     print("Fetching quote...")
     quote = fetch_quote()
     print(f"Quote: \"{quote[0]}\" — {quote[1]}")
 
-    # Fetch GitHub stats
     print("Fetching GitHub stats...")
     user_id, created_at = get_user_id()
 
-    # Account age
     acc_date = datetime.datetime.fromisoformat(created_at.replace('Z', '+00:00'))
     age = daily_readme(acc_date)
 
-    # Repos & Stars
     repos, stars = get_repos_and_stars()
 
-    # Commits (last year)
     end_date = datetime.datetime.now(datetime.timezone.utc).isoformat()
     start_date = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=365)).isoformat()
     commits = get_total_commits(start_date, end_date)
 
-    # Followers
     followers = get_followers()
-
-    # Streak (current + longest in the last-year calendar)
     streak, longest = get_streaks()
+
+    print("Fetching repository languages...")
+    programming, computer = classify_languages(get_language_bytes())
+    expertise = derive_expertise(programming)
+    project = derive_project(programming)
+    programming_text = ', '.join(programming) if programming else 'TypeScript, Swift'
+    computer_text = ', '.join(computer)
+    expertise_text = ', '.join(expertise)
 
     stats = {
         'age': age,
@@ -475,13 +576,16 @@ def main():
         'followers': followers,
         'streak': f"{streak} day{format_plural(streak)}",
         'longest': f"{longest} day{format_plural(longest)}",
+        'expertise': expertise_text,
+        'project': project,
+        'programming': programming_text,
+        'computer': computer_text,
     }
 
     print(f"\nStats:")
     for k, v in stats.items():
         print(f"  {k}: {v}")
 
-    # Update SVGs
     print("\nUpdating SVGs...")
     update_svg('assets/dark_mode.svg', stats, quote)
     update_svg('assets/light_mode.svg', stats, quote)
