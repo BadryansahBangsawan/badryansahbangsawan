@@ -2,12 +2,20 @@ name: Update Profile Stats
 
 on:
   schedule:
-    # Run daily at 6 AM UTC (1 PM WIB)
-    - cron: '0 6 * * *'
-  workflow_dispatch:  # Allow manual trigger
+    # Hourly so Streak / Longest track today's contributions.
+    - cron: '0 * * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'update_profile.py'
+      - '.github/workflows/update-profile.yml'
 
 permissions:
   contents: write
+
+concurrency:
+  group: update-profile
+  cancel-in-progress: true
 
 jobs:
   update:
@@ -34,8 +42,11 @@ jobs:
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || github.token }}
           USER_NAME: BadryansahBangsawan
+          USER_TZ: Asia/Jakarta
+          TZ: Asia/Jakarta
         run: |
           python update_profile.py
+
 
       - name: Commit and push changes
         run: |

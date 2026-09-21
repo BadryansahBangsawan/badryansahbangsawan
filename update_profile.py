@@ -14,6 +14,8 @@ import time
 import hashlib
 import requests
 import datetime
+from zoneinfo import ZoneInfo
+
 from collections import Counter
 from dateutil import relativedelta
 from lxml import etree
@@ -24,6 +26,8 @@ from lxml import etree
 # ============================================================
 HEADERS = {'Authorization': f'token {os.environ["ACCESS_TOKEN"]}'}
 USER_NAME = os.environ.get('USER_NAME', 'BadryansahBangsawan')
+USER_TZ = ZoneInfo(os.environ.get('USER_TZ', 'Asia/Jakarta'))
+
 
 QUERY_COUNT = {
     'user_getter': 0, 'follower_getter': 0,
@@ -141,9 +145,13 @@ def graphql_request(func_name, query, variables):
         headers=HEADERS,
         timeout=30
     )
-    if resp.status_code == 200:
-        return resp.json()
-    raise Exception(f"{func_name} failed: {resp.status_code} - {resp.text}")
+    if resp.status_code != 200:
+        raise Exception(f"{func_name} failed: {resp.status_code} - {resp.text}")
+    payload = resp.json()
+    if payload.get('data') is None:
+        raise Exception(f"{func_name} graphql: {payload.get('errors')}")
+    return payload
+
 
 
 # ============================================================
@@ -230,11 +238,14 @@ def get_repos_and_stars():
         repos = data['data']['user']['repositories']
         total_repos = repos['totalCount']
         for edge in repos['edges']:
-            total_stars += edge['node']['stargazers']['totalCount']
+            node = edge.get('node') or {}
+            stars = (node.get('stargazers') or {}).get('totalCount') or 0
+            total_stars += stars
         if not repos['pageInfo']['hasNextPage']:
             break
         cursor = repos['pageInfo']['endCursor']
     return total_repos, total_stars
+
 
 
 def get_language_bytes():
@@ -260,12 +271,18 @@ def get_language_bytes():
         data = graphql_request('graph_languages', query, {'login': USER_NAME, 'cursor': cursor})
         repos = data['data']['user']['repositories']
         for edge in repos['edges']:
-            for lang in edge['node']['languages']['edges']:
-                totals[lang['node']['name']] += lang['size']
+            node = edge.get('node') or {}
+            langs = node.get('languages') or {}
+            for lang in langs.get('edges') or []:
+                lang_node = lang.get('node') or {}
+                name = lang_node.get('name')
+                if name:
+                    totals[name] += lang.get('size') or 0
         if not repos['pageInfo']['hasNextPage']:
             break
         cursor = repos['pageInfo']['endCursor']
     return totals
+
 
 
 def get_total_commits(start_date, end_date):
@@ -311,26 +328,46 @@ assert compute_streaks([('2026-09-14', 1), ('2026-09-15', 0)], '2026-09-15') == 
 assert compute_streaks([('2026-09-13', 1), ('2026-09-14', 0), ('2026-09-15', 1)], '2026-09-15') == (1, 1)
 
 
-def get_streaks():
-    """Current + longest contribution streak from the last-year calendar."""
+def contribution_days(from_iso, to_iso):
     query = '''
-    query($login: String!) {
+    query($login: String!, $from: DateTime!, $to: DateTime!) {
         user(login: $login) {
-            contributionsCollection {
+            contributionsCollection(from: $from, to: $to) {
                 contributionCalendar {
                     weeks { contributionDays { date contributionCount } }
                 }
             }
         }
     }'''
-    data = graphql_request('graph_streak', query, {'login': USER_NAME})
-    days = [
+    data = graphql_request('graph_streak', query, {
+        'login': USER_NAME,
+        'from': from_iso,
+        'to': to_iso,
+    })
+    weeks = data['data']['user']['contributionsCollection']['contributionCalendar']['weeks']
+    return [
         (d['date'], d['contributionCount'])
-        for week in data['data']['user']['contributionsCollection']['contributionCalendar']['weeks']
+        for week in weeks
         for d in week['contributionDays']
     ]
-    today = datetime.date.today().isoformat()
+
+
+def get_streaks(created_at):
+    """Current + all-time longest contribution streak (GitHub calendar, USER_TZ today)."""
+    created = datetime.datetime.fromisoformat(created_at.replace('Z', '+00:00'))
+    now = datetime.datetime.now(datetime.timezone.utc)
+    days_map = {}
+    start = created
+    year = datetime.timedelta(days=365) - datetime.timedelta(seconds=1)
+    while start < now:
+        end = min(start + year, now)
+        for date, count in contribution_days(start.isoformat(), end.isoformat()):
+            days_map[date] = count
+        start = end + datetime.timedelta(seconds=1)
+    days = sorted(days_map.items())
+    today = datetime.datetime.now(USER_TZ).date().isoformat()
     return compute_streaks(days, today)
+
 
 
 def get_loc(owner_affiliation):
@@ -558,7 +595,7 @@ def main():
     commits = get_total_commits(start_date, end_date)
 
     followers = get_followers()
-    streak, longest = get_streaks()
+    streak, longest = get_streaks(created_at)
 
     print("Fetching repository languages...")
     programming, computer = classify_languages(get_language_bytes())
