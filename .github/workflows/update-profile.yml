@@ -40,12 +40,14 @@ jobs:
 
       - name: Update profile stats
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || github.token }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
           USER_NAME: BadryansahBangsawan
           USER_TZ: Asia/Jakarta
           TZ: Asia/Jakarta
         run: |
           python update_profile.py
+
 
 
       - name: Commit and push changes

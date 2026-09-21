@@ -24,9 +24,12 @@ from lxml import etree
 # ============================================================
 # Configuration
 # ============================================================
-HEADERS = {'Authorization': f'token {os.environ["ACCESS_TOKEN"]}'}
+GRAPHQL_TOKEN = os.environ.get('ACCESS_TOKEN') or os.environ.get('GITHUB_TOKEN') or ''
+HEADERS = {'Authorization': f'token {GRAPHQL_TOKEN}'}
 USER_NAME = os.environ.get('USER_NAME', 'BadryansahBangsawan')
 USER_TZ = ZoneInfo(os.environ.get('USER_TZ', 'Asia/Jakarta'))
+HAS_REPO_TOKEN = bool(os.environ.get('ACCESS_TOKEN'))
+
 
 
 QUERY_COUNT = {
@@ -553,22 +556,27 @@ def update_svg(svg_path, stats, quote):
     root = tree.getroot()
 
     # Keep static Uptime text in the SVG (e.g. "4+ years").
-    justify_format(root, 'repo_data', stats['repos'], 6)
-    justify_format(root, 'star_data', stats['stars'], 14)
+    if 'repos' in stats:
+        justify_format(root, 'repo_data', stats['repos'], 6)
+    if 'stars' in stats:
+        justify_format(root, 'star_data', stats['stars'], 14)
     justify_format(root, 'commit_data', stats['commits'], 22)
     justify_format(root, 'follower_data', stats['followers'], 10)
     justify_format(root, 'streak_data', stats['streak'])
     justify_format(root, 'longest_data', stats['longest'])
-    justify_format(root, 'expertise_data', stats['expertise'])
-    justify_format(root, 'project_data', stats['project'])
-    justify_format(root, 'programming_data', stats['programming'])
-    justify_format(root, 'computer_data', stats['computer'])
-    justify_format(root, 'loc_data', stats['programming'])
+    if 'expertise' in stats:
+        justify_format(root, 'expertise_data', stats['expertise'])
+        justify_format(root, 'project_data', stats['project'])
+        justify_format(root, 'programming_data', stats['programming'])
+        justify_format(root, 'computer_data', stats['computer'])
+        justify_format(root, 'loc_data', stats['programming'])
 
-    update_quote(root, quote[0], quote[1])
+    if quote is not None:
+        update_quote(root, quote[0], quote[1])
 
     tree.write(svg_path, encoding='utf-8', xml_declaration=True)
     print(f"Updated {svg_path}")
+
 
 
 # ============================================================
@@ -578,17 +586,18 @@ def main():
     print("=== GitHub Profile Updater ===")
     print(f"User: {USER_NAME}")
 
-    print("Fetching quote...")
-    quote = fetch_quote()
-    print(f"Quote: \"{quote[0]}\" — {quote[1]}")
+    quote = None
+    if os.environ.get('UPDATE_QUOTE') == '1':
+        print("Fetching quote...")
+        quote = fetch_quote()
+        print(f"Quote: \"{quote[0]}\" — {quote[1]}")
+
 
     print("Fetching GitHub stats...")
     user_id, created_at = get_user_id()
 
     acc_date = datetime.datetime.fromisoformat(created_at.replace('Z', '+00:00'))
     age = daily_readme(acc_date)
-
-    repos, stars = get_repos_and_stars()
 
     end_date = datetime.datetime.now(datetime.timezone.utc).isoformat()
     start_date = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=365)).isoformat()
@@ -597,27 +606,29 @@ def main():
     followers = get_followers()
     streak, longest = get_streaks(created_at)
 
-    print("Fetching repository languages...")
-    programming, computer = classify_languages(get_language_bytes())
-    expertise = derive_expertise(programming)
-    project = derive_project(programming)
-    programming_text = ', '.join(programming) if programming else 'TypeScript, Swift'
-    computer_text = ', '.join(computer)
-    expertise_text = ', '.join(expertise)
-
     stats = {
         'age': age,
-        'repos': repos,
-        'stars': stars,
         'commits': commits,
         'followers': followers,
         'streak': f"{streak} day{format_plural(streak)}",
         'longest': f"{longest} day{format_plural(longest)}",
-        'expertise': expertise_text,
-        'project': project,
-        'programming': programming_text,
-        'computer': computer_text,
     }
+
+    if HAS_REPO_TOKEN:
+        print("Fetching repository languages...")
+        repos, stars = get_repos_and_stars()
+        programming, computer = classify_languages(get_language_bytes())
+        expertise = derive_expertise(programming)
+        project = derive_project(programming)
+        programming_text = ', '.join(programming) if programming else 'TypeScript, Swift'
+        stats['repos'] = repos
+        stats['stars'] = stars
+        stats['expertise'] = ', '.join(expertise)
+        stats['project'] = project
+        stats['programming'] = programming_text
+        stats['computer'] = ', '.join(computer)
+    else:
+        print("ACCESS_TOKEN unset; leaving repos/stars/languages unchanged")
 
     print(f"\nStats:")
     for k, v in stats.items():
@@ -634,8 +645,10 @@ def main():
             print(f"  {k}: {v}")
 
 
+
 if __name__ == '__main__':
-    if 'ACCESS_TOKEN' not in os.environ:
-        print("ERROR: ACCESS_TOKEN environment variable required")
+    if not GRAPHQL_TOKEN:
+        print("ERROR: ACCESS_TOKEN or GITHUB_TOKEN required")
         sys.exit(1)
     main()
+
