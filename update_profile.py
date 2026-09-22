@@ -11,6 +11,7 @@ import os
 import sys
 import json
 import time
+import re
 import hashlib
 import requests
 import datetime
@@ -578,6 +579,33 @@ def update_svg(svg_path, stats, quote):
     print(f"Updated {svg_path}")
 
 
+def update_readme_cache_key(readme_path, svg_paths):
+    """Change the image URL when rendered SVG content changes."""
+    digest = hashlib.sha256()
+    for svg_path in svg_paths:
+        with open(svg_path, 'rb') as svg_file:
+            digest.update(svg_file.read())
+    cache_key = digest.hexdigest()[:12]
+
+    with open(readme_path, encoding='utf-8') as readme_file:
+        content = readme_file.read()
+
+    updated, replacements = re.subn(
+        r'(assets/(?:dark|light)_mode\.svg)(?:\?v=[0-9a-f]+)?',
+        rf'\1?v={cache_key}',
+        content,
+    )
+    if replacements != len(svg_paths):
+        raise ValueError(
+            f"Expected {len(svg_paths)} profile image URLs in {readme_path}, "
+            f"found {replacements}"
+        )
+
+    with open(readme_path, 'w', encoding='utf-8') as readme_file:
+        readme_file.write(updated)
+    print(f"Updated {readme_path} cache key: {cache_key}")
+
+
 
 # ============================================================
 # Main
@@ -635,8 +663,10 @@ def main():
         print(f"  {k}: {v}")
 
     print("\nUpdating SVGs...")
-    update_svg('assets/dark_mode.svg', stats, quote)
-    update_svg('assets/light_mode.svg', stats, quote)
+    svg_paths = ('assets/dark_mode.svg', 'assets/light_mode.svg')
+    for svg_path in svg_paths:
+        update_svg(svg_path, stats, quote)
+    update_readme_cache_key('README.md', svg_paths)
 
     print("\n=== Done ===")
     print(f"Total GraphQL queries: {sum(QUERY_COUNT.values())}")
