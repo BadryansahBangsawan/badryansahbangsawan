@@ -1,6 +1,6 @@
 <a href="https://github.com/BadryansahBangsawan/badryansahbangsawan">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/BadryansahBangsawan/badryansahbangsawan/main/assets/dark_mode.svg?v=39949a4c042e">
-    <img alt="Badryansah Bangsawan's GitHub Profile README" src="https://raw.githubusercontent.com/BadryansahBangsawan/badryansahbangsawan/main/assets/light_mode.svg?v=39949a4c042e">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/BadryansahBangsawan/badryansahbangsawan/main/assets/dark_mode.svg?v=e9226e4e20a3">
+    <img alt="Badryansah Bangsawan's GitHub Profile README" src="https://raw.githubusercontent.com/BadryansahBangsawan/badryansahbangsawan/main/assets/light_mode.svg?v=e9226e4e20a3">
   </picture>
 </a>
